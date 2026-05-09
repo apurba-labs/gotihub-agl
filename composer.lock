@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec06b6b62dc5639952f1e8d9f8f89a44",
+    "content-hash": "ff9b18f3e372eb367c93a3cb8b70d84e",
     "packages": [
         {
             "name": "apurba-labs/laravel-agl",
@@ -42,19 +42,14 @@
         },
         {
             "name": "apurba-labs/laravel-approval-engine",
-            "version": "v1.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/apurba-labs/laravel-approval-engine.git",
-                "reference": "8c34e3c9a5133c84c6196174a5a430d4b42b67e8"
-            },
+            "version": "dev-main",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/apurba-labs/laravel-approval-engine/zipball/8c34e3c9a5133c84c6196174a5a430d4b42b67e8",
-                "reference": "8c34e3c9a5133c84c6196174a5a430d4b42b67e8",
-                "shasum": ""
+                "type": "path",
+                "url": "../laravel-approval-engine",
+                "reference": "822cf0205f43c01462d9a6b4cdbe306979e6e432"
             },
             "require": {
+                "apurba-labs/laravel-iam": "@dev",
                 "illuminate/support": "^10.0|^11.0|^12.0|^13.0",
                 "php": "^8.1"
             },
@@ -78,16 +73,93 @@
                     "ApurbaLabs\\ApprovalEngine\\Database\\Factories\\": "database/factories/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "ApurbaLabs\\ApprovalEngine\\Tests\\": "tests/",
+                    "ApurbaLabs\\ApprovalEngine\\Tests\\Support\\": "tests/Support/"
+                }
+            },
             "license": [
                 "MIT"
             ],
             "description": "Batch-based approval workflow engine for Laravel",
-            "support": {
-                "issues": "https://github.com/apurba-labs/laravel-approval-engine/issues",
-                "source": "https://github.com/apurba-labs/laravel-approval-engine/tree/v1.3.0"
+            "keywords": [
+                "approval-engine",
+                "approval-workflow",
+                "batch-approval",
+                "enterprise-workflow",
+                "laravel",
+                "multi-stage-approval",
+                "notification-batching",
+                "process-approval",
+                "rbac",
+                "saas-ready",
+                "task-automation",
+                "workflow"
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "apurba-labs/laravel-iam",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../laravel-iam",
+                "reference": "611880c35752bac30473a09e511f53da9e1e1a02"
             },
-            "time": "2026-03-25T22:33:41+00:00"
+            "require": {
+                "illuminate/support": "^10.0|^11.0|^12.0|^13.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "doctrine/dbal": "^4.0",
+                "orchestra/testbench": "^8.0|^9.0",
+                "phpunit/phpunit": "^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ApurbaLabs\\IAM\\Providers\\IAMServiceProvider"
+                    ],
+                    "aliases": {
+                        "IAM": "ApurbaLabs\\IAM\\Facades\\IAM"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ApurbaLabs\\IAM\\": "src/",
+                    "ApurbaLabs\\IAM\\Database\\Seeders\\": "database/seeders/",
+                    "ApurbaLabs\\IAM\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "ApurbaLabs\\IAM\\Tests\\": "tests/",
+                    "ApurbaLabs\\IAM\\Tests\\Support\\": "tests/Support/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Laravel IAM (Identity & Access Management) package with hierarchical permissions, wildcard support, and SaaS-ready design.",
+            "keywords": [
+                "access-control",
+                "authorization",
+                "iam",
+                "laravel",
+                "permissions",
+                "rbac",
+                "saas"
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "aws/aws-crt-php",
@@ -10744,7 +10816,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "apurba-labs/laravel-agl": 20,
-        "apurba-labs/laravel-approval-engine": 20
+        "apurba-labs/laravel-approval-engine": 20,
+        "apurba-labs/laravel-iam": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
