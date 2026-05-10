@@ -15,7 +15,6 @@ use App\Services\MidnightService;
 
 class GovernanceDashboard extends Page
 {
-    protected static string $view = 'filament.pages.governance-dashboard';
 
     public static function getNavigationIcon(): ?string
     {

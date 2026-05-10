@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class AuditFeed extends TableWidget
 {
+    protected int | string | array $columnSpan = 'full';
+    
     public function table(Table $table): Table
     {
         return $table
