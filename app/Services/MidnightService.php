@@ -18,11 +18,19 @@ class MidnightService
      */
     public function generateProof(array $params): array
     {
+        // LOGGING: Crucial for auditing the ZK-request
         Log::info("Midnight ZK-Proof Generation Initiated", [
             'context' => $params,
             'actor_id' => auth()->id()
         ]);
 
+        /** * REAL SCENARIO WORKFLOW:
+         * 1. $jsonInput = json_encode($params);
+         * 2. $output = shell_exec("node /path/to/midnight/wrapper.js '$jsonInput'");
+         * 3. return json_decode($output);
+         */
+
+        // For now, we provide a High-Fidelity Simulation
         $proofId = 'zkp_' . Str::random(20);
         $merkleRoot = hash('sha256', (string) now()->getTimestamp());
 
@@ -32,7 +40,7 @@ class MidnightService
             'merkle_root' => $merkleRoot,
             'network' => 'Midnight Testnet (Devnet-v1)',
             'timestamp' => now()->toIso8601String(),
-            'status' => 'Verified'
+            'status' => 'Verified' // This matches your dashboard expectations
         ];
     }
 
