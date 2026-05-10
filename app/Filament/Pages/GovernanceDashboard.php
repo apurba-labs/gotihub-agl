@@ -9,6 +9,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Illuminate\Contracts\Support\Htmlable;
 use App\Models\AuditLog;
+use App\Models\ShieldedTransaction;
 use App\Services\ReasoningService;
 use App\Services\ApprovalEngine;
 use App\Services\MidnightService;
@@ -98,6 +99,13 @@ class GovernanceDashboard extends Page
                         // 6. Final Step: Proceed to Midnight ZK-Proof
                         $proof = $midnightService->generateProof($data);
 
+                        ShieldedTransaction::create([
+                            'proof_id' => $proof['proof_id'],
+                            'merkle_root' => $proof['merkle_root'],
+                            'transaction_id_hash' => hash('sha256', $data['transaction_id']),
+                            'network' => $proof['network'],
+                            'status' => 'shielded',
+                        ]);
                         AuditLog::create([
                             'event_type' => 'ZK',
                             'message' => "Midnight Proof Generated: {$proof['proof_id']}",
