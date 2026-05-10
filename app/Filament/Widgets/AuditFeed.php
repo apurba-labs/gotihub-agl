@@ -49,7 +49,7 @@ class AuditFeed extends TableWidget
                 //BulkActionGroup::make([
                     //
                 //]),
-            ]),
+            ])
             ->poll('3s');
     }
 }
