@@ -6,5 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class AuditLog extends Model
 {
-    //
+    protected $fillable = [
+        'event_type',
+        'message',
+        'status',
+        'metadata',
+    ];
 }
