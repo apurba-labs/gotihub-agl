@@ -5,17 +5,18 @@ namespace App\Filament\Pages;
 use Filament\Pages\Page;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
-use ApurbaLabs\LaravelAgl\Facades\AGL;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
-use App\Services\MidnightService;
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Support\Facades\Http;
 use App\Models\AuditLog;
+use App\Services\ReasoningService;
+use App\Services\ApprovalEngine;
+use App\Services\MidnightService;
 
 class GovernanceDashboard extends Page
 {
-    
+    protected static string $view = 'filament.pages.governance-dashboard';
+
     public static function getNavigationIcon(): ?string
     {
         return 'heroicon-o-shield-check';
@@ -59,33 +60,21 @@ class GovernanceDashboard extends Page
                         ->default('identity')
                         ->required(),
                 ])
-                ->action(function (array $data, MidnightService $midnightService) {
+                ->action(function (array $data, ReasoningService $aiService, ApprovalEngine $engine, MidnightService $midnightService) {
                     
-                    // Handshake with the Gemma 4 Bridge
+                    // 1. Initial Logging - IAM Check
                     AuditLog::create([
-                        'event_type' => 'AI',
-                        'message' => "Requesting Agentic Reasoning for {$data['transaction_id']}...",
+                        'event_type' => 'IAM',
+                        'message' => "Request initiated for {$data['transaction_id']} by " . auth()->user()->name,
                         'status' => 'info'
                     ]);
 
                     try {
-                        $response = Http::timeout(30)->post('http://localhost:8001/api/v1/audit', [
-                            'transaction_id' => $data['transaction_id'],
-                            'audit_type' => $data['audit_type'],
-                            'metadata' => [
-                                'actor_id' => auth()->id(),
-                                'platform' => 'GotiHub-AGL'
-                            ]
-                        ]);
+                        // 2. Call the Gemma Bridge (via Service)
+                        $aiResult = $aiService->analyzeTransaction($data['transaction_id'], $data['audit_type']);
 
-                        if ($response->failed()) {
-                            throw new \Exception("AI Bridge Unreachable");
-                        }
-
-                        $result = $response->json();
-
-                        // Log every 'Thought' from the Multi-Agent Loop
-                        foreach ($result['reasoning'] as $thought) {
+                        // 3. Log every 'Thought' from the Multi-Agent Loop
+                        foreach ($aiResult['reasoning'] as $thought) {
                             AuditLog::create([
                                 'event_type' => 'AI',
                                 'message' => $thought,
@@ -93,12 +82,21 @@ class GovernanceDashboard extends Page
                             ]);
                         }
 
-                        if ($result['decision'] !== 'APPROVED') {
-                            Notification::make()->title('Audit Rejected by Gemma 4')->danger()->send();
+                        // 4. Handle the AI Decision
+                        if ($aiResult['decision'] !== 'APPROVED') {
+                            $engine->flagForReview($data['transaction_id'], 'AI_REJECTION');
+                            
+                            Notification::make()
+                                ->title('Audit Rejected by Gemma 4')
+                                ->danger()
+                                ->send();
                             return;
                         }
 
-                        // Proceed to Midnight ZK-Proof
+                        // 5. SUCCESS: Update Approval Engine Status
+                        $engine->processApproval($data['transaction_id'], 'AI_VERIFIED');
+
+                        // 6. Final Step: Proceed to Midnight ZK-Proof
                         $proof = $midnightService->generateProof($data);
 
                         AuditLog::create([
@@ -114,7 +112,11 @@ class GovernanceDashboard extends Page
                             ->send();
 
                     } catch (\Exception $e) {
-                        Notification::make()->title('System Error')->body($e->getMessage())->danger()->send();
+                        Notification::make()
+                            ->title('System Error')
+                            ->body($e->getMessage())
+                            ->danger()
+                            ->send();
                     }
                 }),
         ];
@@ -124,6 +126,7 @@ class GovernanceDashboard extends Page
     {
         return [
             \App\Filament\Widgets\DnaHealthStats::class,
+            \App\Filament\Widgets\AuditFeed::class, // Added your new feed here!
         ];
     }
 }
