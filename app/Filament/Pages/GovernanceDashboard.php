@@ -50,45 +50,44 @@ class GovernanceDashboard extends Page
                         ->required(),
                 ])
                 ->action(function (array $data, GovernanceManager $agl) {
-                    // This is the bridge! We call the package directly here.
-                    
-                    // 1. Initial Log
-                    AuditLog::create([
-                        'event_type' => 'IAM',
-                        'message' => "Request initiated for {$data['transaction_id']}",
-                        'status' => 'info'
-                    ]);
-
                     try {
-                        // 2. Run the Package Policy
+                        // 1. Execute the AGL Governance Loop
                         $result = $agl->policy('Institutional-Alumni-Verification')
-                            ->requireZkProof()
-                            ->evaluate(['id' => $data['transaction_id']]);
+                                    ->requireZkProof()
+                                    ->evaluate(['id' => $data['transaction_id']]);
 
-                        // 3. Log the AI Reasoning to the UI Feed
+                        // 2. Log the AI Reasoning (Scannable for the UI)
                         AuditLog::create([
-                            'event_type' => 'AI',
-                            'message' => $result['reasoning'],
-                            'status' => $result['approved'] ? 'success' : 'warning'
+                            'event_type' => 'AI_AUDIT',
+                            'message'    => $result['reasoning'],
+                            'status'     => $result['approved'] ? 'success' : 'warning'
                         ]);
 
                         if ($result['approved']) {
-                            // 4. Save to Ledger (The ZK Proof is in $result['proof'])
+                            /** * 3. Save to Ledger
+                             * Using the top-level 'proof_id' we just added to the package,
+                             * but falling back to the 'proof' array for the details.
+                             */
                             ShieldedTransaction::create([
-                                'proof_id' => $result['proof']['proof_id'],
-                                'merkle_root' => $result['proof']['merkle_root'],
+                                'proof_id'            => $result['proof_id'], // Top-level shortcut
+                                'merkle_root'         => $result['proof']['merkle_root'] ?? 'N/A',
                                 'transaction_id_hash' => hash('sha256', $data['transaction_id']),
-                                'network' => $result['proof']['network'],
-                                'status' => 'shielded',
+                                'network'             => $result['proof']['network'] ?? 'Midnight-Mainnet',
+                                'status'              => 'shielded',
                             ]);
 
                             Notification::make()
                                 ->title('Sovereign Verification Successful')
+                                ->body("Proof ID: {$result['proof_id']}") // Show the ID to the client!
                                 ->success()
                                 ->send();
                         } else {
+                            // 4. Handle Rejections (AGL or Strict Policy)
                             Notification::make()
                                 ->title('Verification Rejected by AGL')
+                                ->body($result['decision'] === 'REJECTED_BY_STRICT_POLICY' 
+                                    ? 'Flagged by Strict Risk Score Threshold.' 
+                                    : 'AI Agent declined the verification.')
                                 ->danger()
                                 ->send();
                         }

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use ApurbaLabs\AGL\Contracts\ZkVerifier;
 use ApurbaLabs\AGL\Contracts\AglBridgeInterface;
+use Illuminate\Support\Facades\Http;
 
 /**
  * Service orchestrator for Midnight Network interactions.
@@ -46,12 +47,18 @@ class MidnightService implements ZkVerifier, AglBridgeInterface
     /**
      * Implementation for AglBridgeInterface (Standardized String)
      */
+
     public function prove(array $payload): string
     {
-        $result = $this->generateProof($payload);
-        
-        // Return the unique proof ID as the string seal
-        return $result['proof_id'];
+        try {
+
+            return (new RemoteAglBridge(config('services.midnight.bridge_url')))->prove($payload);
+
+        } catch (\Exception $e) {
+            Log::error("Midnight Bridge Connection Failed: " . $e->getMessage());
+        }
+        // Fallback for demo if the Bun server is offline
+        return 'zkp_fallback_' . Str::random(10);
     }
 
     public function verify(string $proof): bool

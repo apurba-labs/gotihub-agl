@@ -12,7 +12,7 @@
             "dist": {
                 "type": "path",
                 "url": "../packages/laravel-agl",
-                "reference": "425b0e22ba2f450feba655bc87144b9601f40b20"
+                "reference": "9abf7e2dedb08e57c0667cad93357ba89595c711"
             },
             "require": {
                 "illuminate/support": "^13.0",
