@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Ai\Agents\InstitutionalAuditor;
+use ApurbaLabs\AGL\Contracts\AglAuditor;
+use ApurbaLabs\AGL\Contracts\ZkVerifier;
+use App\Services\Midnight\MidnightService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -12,9 +16,11 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            \ApurbaLabs\LaravelAgl\Contracts\ZkVerifier::class, 
-            \App\Services\Midnight\MidnightService::class
+            ZkVerifier::class, 
+            MidnightService::class
         );
+
+        $this->app->bind(AglAuditor::class, InstitutionalAuditor::class);
     }
 
     /**

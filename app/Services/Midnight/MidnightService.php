@@ -4,7 +4,7 @@ namespace App\Services\Midnight;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use ApurbaLabs\LaravelAgl\Contracts\ZkVerifier;
+use ApurbaLabs\AGL\Contracts\ZkVerifier;
 
 /**
  * Service orchestrator for Midnight Network interactions.

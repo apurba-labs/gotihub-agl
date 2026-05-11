@@ -13,6 +13,7 @@ use App\Models\ShieldedTransaction;
 use App\Services\ReasoningService;
 use App\Services\ApprovalEngine;
 use App\Services\Midnight\MidnightService;
+use ApurbaLabs\AGL\Services\GovernanceManager;
 
 class GovernanceDashboard extends Page
 {
@@ -43,85 +44,59 @@ class GovernanceDashboard extends Page
             Action::make('triggerFullAudit')
                 ->label('Initiate Agentic Audit')
                 ->icon('heroicon-m-shield-check')
-                ->color('primary')
-                ->modalHeading('New Governance Audit')
-                ->modalDescription('This will trigger a Gemma 4 reasoning loop and generate a Midnight ZK-Proof.')
                 ->form([
                     TextInput::make('transaction_id')
                         ->label('Transaction ID / Alumni ID')
-                        ->placeholder('ALUM-2026-XXXX')
-                        ->required(),
-                    Select::make('audit_type')
-                        ->options([
-                            'voting' => 'Batch Voting Rights',
-                            'finance' => 'Fund Allocation',
-                            'identity' => 'DNA Verification',
-                        ])
-                        ->default('identity')
                         ->required(),
                 ])
-                ->action(function (array $data, ReasoningService $aiService, ApprovalEngine $engine, MidnightService $midnightService) {
+                ->action(function (array $data, GovernanceManager $agl) {
+                    // This is the bridge! We call the package directly here.
                     
-                    // 1. Initial Logging - IAM Check
+                    // 1. Initial Log
                     AuditLog::create([
                         'event_type' => 'IAM',
-                        'message' => "Request initiated for {$data['transaction_id']} by " . auth()->user()->name,
+                        'message' => "Request initiated for {$data['transaction_id']}",
                         'status' => 'info'
                     ]);
 
                     try {
-                        // 2. Call the Gemma Bridge (via Service)
-                        $aiResult = $aiService->analyzeTransaction($data['transaction_id'], $data['audit_type']);
+                        // 2. Run the Package Policy
+                        $result = $agl->policy('Institutional-Alumni-Verification')
+                            ->requireZkProof()
+                            ->evaluate(['id' => $data['transaction_id']]);
 
-                        // 3. Log every 'Thought' from the Multi-Agent Loop
-                        foreach ($aiResult['reasoning'] as $thought) {
-                            AuditLog::create([
-                                'event_type' => 'AI',
-                                'message' => $thought,
-                                'status' => 'success'
+                        // 3. Log the AI Reasoning to the UI Feed
+                        AuditLog::create([
+                            'event_type' => 'AI',
+                            'message' => $result['reasoning'],
+                            'status' => $result['approved'] ? 'success' : 'warning'
+                        ]);
+
+                        if ($result['approved']) {
+                            // 4. Save to Ledger (The ZK Proof is in $result['proof'])
+                            ShieldedTransaction::create([
+                                'proof_id' => $result['proof']['proof_id'],
+                                'merkle_root' => $result['proof']['merkle_root'],
+                                'transaction_id_hash' => hash('sha256', $data['transaction_id']),
+                                'network' => $result['proof']['network'],
+                                'status' => 'shielded',
                             ]);
-                        }
 
-                        // 4. Handle the AI Decision
-                        if ($aiResult['decision'] !== 'APPROVED') {
-                            $engine->flagForReview($data['transaction_id'], 'AI_REJECTION');
-                            
                             Notification::make()
-                                ->title('Audit Rejected by Gemma 4')
+                                ->title('Sovereign Verification Successful')
+                                ->success()
+                                ->send();
+                        } else {
+                            Notification::make()
+                                ->title('Verification Rejected by AGL')
                                 ->danger()
                                 ->send();
-                            return;
                         }
-
-                        // 5. SUCCESS: Update Approval Engine Status
-                        $engine->processApproval($data['transaction_id'], 'AI_VERIFIED');
-
-                        // 6. Final Step: Proceed to Midnight ZK-Proof
-                        $proof = $midnightService->generateProof($data);
-
-                        ShieldedTransaction::create([
-                            'proof_id' => $proof['proof_id'],
-                            'merkle_root' => $proof['merkle_root'],
-                            'transaction_id_hash' => hash('sha256', $data['transaction_id']),
-                            'network' => $proof['network'],
-                            'status' => 'shielded',
-                        ]);
-                        AuditLog::create([
-                            'event_type' => 'ZK',
-                            'message' => "Midnight Proof Generated: {$proof['proof_id']}",
-                            'status' => 'success'
-                        ]);
-
-                        Notification::make()
-                            ->title('Privacy-First Audit Successful')
-                            ->success()
-                            ->body("Decision: **Approved** | ZK-Proof: `{$proof['proof_id']}`")
-                            ->send();
 
                     } catch (\Exception $e) {
                         Notification::make()
-                            ->title('System Error')
-                            ->body($e->getMessage())
+                            ->title('AGL Service Error')
+                            ->body($e->getMessage()) // Likely "Connection Refused" if Ollama is off
                             ->danger()
                             ->send();
                     }
