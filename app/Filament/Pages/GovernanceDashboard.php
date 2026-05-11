@@ -139,22 +139,17 @@ class GovernanceDashboard extends Page
 
     public function startAudit(GovernanceManager $agl)
     {
-        // 1. Trigger the Package Policy
-        // This automatically calls Gemma 2 and (if required) Midnight ZK
-        $policy = $agl->policy('Institutional-Alumni-Verification')
-                      ->requireZkProof();
+        $result = $agl->policy('Alumni-Verification')
+                    ->requireZkProof()
+                    ->evaluate(['id' => $this->transaction_id]);
 
-        $isVerified = $policy->evaluate(['id' => $this->transaction_id]);
-
-        if ($isVerified) {
-            // 2. The Package worked! Now we just update our local UI/DB
-            // The AI "Thoughts" are stored in the AuditLog via the package's internal events
-            // or we can manually log them here for the UI Feed.
+        if ($result['approved']) {
+            // We have the REAL proof data from the package!
+            $this->saveToShieldedLedger($result);
             
-            $this->dispatch('audit-completed');
             Notification::make()->title('Sovereign Verification Successful')->success()->send();
         } else {
-            Notification::make()->title('Verification Rejected by AGL')->danger()->send();
+            Notification::make()->title('Verification Rejected')->danger()->send();
         }
     }
 }
