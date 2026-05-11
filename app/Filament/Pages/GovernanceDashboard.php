@@ -12,7 +12,7 @@ use App\Models\AuditLog;
 use App\Models\ShieldedTransaction;
 use App\Services\ReasoningService;
 use App\Services\ApprovalEngine;
-use App\Services\MidnightService;
+use App\Services\Midnight\MidnightService;
 
 class GovernanceDashboard extends Page
 {
@@ -135,5 +135,26 @@ class GovernanceDashboard extends Page
             \App\Filament\Widgets\DnaHealthStats::class,
             \App\Filament\Widgets\AuditFeed::class, // Added your new feed here!
         ];
+    }
+
+    public function startAudit(GovernanceManager $agl)
+    {
+        // 1. Trigger the Package Policy
+        // This automatically calls Gemma 2 and (if required) Midnight ZK
+        $policy = $agl->policy('Institutional-Alumni-Verification')
+                      ->requireZkProof();
+
+        $isVerified = $policy->evaluate(['id' => $this->transaction_id]);
+
+        if ($isVerified) {
+            // 2. The Package worked! Now we just update our local UI/DB
+            // The AI "Thoughts" are stored in the AuditLog via the package's internal events
+            // or we can manually log them here for the UI Feed.
+            
+            $this->dispatch('audit-completed');
+            Notification::make()->title('Sovereign Verification Successful')->success()->send();
+        } else {
+            Notification::make()->title('Verification Rejected by AGL')->danger()->send();
+        }
     }
 }

@@ -11,7 +11,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            \ApurbaLabs\LaravelAgl\Contracts\ZkVerifier::class, 
+            \App\Services\Midnight\MidnightService::class
+        );
     }
 
     /**

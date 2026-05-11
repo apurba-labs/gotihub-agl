@@ -1,36 +1,35 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Midnight;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use ApurbaLabs\LaravelAgl\Contracts\ZkVerifier;
 
 /**
  * Service orchestrator for Midnight Network interactions.
- * Handles ZK-Proof generation requests and on-chain verification.
+ * Implements the AGL ZkVerifier Contract for Sovereign Governance.
  */
-class MidnightService
+class MidnightService implements ZkVerifier
 {
     /**
      * Generate a Zero-Knowledge Proof for the given parameters.
-     * * @param array $params Contextual data for the ZK-Circuit
-     * @return array{success: bool, proof_id: string, merkle_root: string, network: string, timestamp: string, status: string}
+     * * @param array $data Contextual data for the ZK-Circuit
+     * @return array
      */
-    public function generateProof(array $params): array
+    public function generateProof(array $data): array
     {
         // LOGGING: Crucial for auditing the ZK-request
         Log::info("Midnight ZK-Proof Generation Initiated", [
-            'context' => $params,
+            'context' => $data,
             'actor_id' => auth()->id()
         ]);
 
-        /** * REAL SCENARIO WORKFLOW:
-         * 1. $jsonInput = json_encode($params);
-         * 2. $output = shell_exec("node /path/to/midnight/wrapper.js '$jsonInput'");
-         * 3. return json_decode($output);
+        /** * REAL SCENARIO WORKFLOW (Repo 4 - Bun Bridge):
+         * This is where your Node/Bun wrapper executes the ZK-circuit logic.
          */
 
-        // For now, we provide a High-Fidelity Simulation
+        // High-Fidelity Simulation for the Demo/Exam
         $proofId = 'zkp_' . Str::random(20);
         $merkleRoot = hash('sha256', (string) now()->getTimestamp());
 
@@ -40,14 +39,12 @@ class MidnightService
             'merkle_root' => $merkleRoot,
             'network' => 'Midnight Testnet (Devnet-v1)',
             'timestamp' => now()->toIso8601String(),
-            'status' => 'Verified' // This matches your dashboard expectations
+            'status' => 'Verified'
         ];
     }
 
     /**
      * Validate a proof against the Midnight Network state.
-     * * @param string $proofId Unique ZK-Proof identifier
-     * @return bool
      */
     public function verifyOnChain(string $proofId): bool
     {
