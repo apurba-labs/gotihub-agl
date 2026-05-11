@@ -11,6 +11,7 @@ use Laravel\Ai\Messages\Message;
 use Laravel\Ai\Promptable;
 use Stringable;
 
+#[Timeout(300)]
 class InstitutionalAuditor implements Agent, AglAuditor, Conversational, HasTools
 {
     use Promptable;
@@ -32,7 +33,8 @@ class InstitutionalAuditor implements Agent, AglAuditor, Conversational, HasTool
         $response = $this->prompt(
             $input, 
             provider: 'ollama', 
-            model: config('agl.model', 'gemma2:2b')
+            model: config('agl.model', 'gemma2:2b'),
+            timeout: 300
         );
 
         $responseText = (string) $response;
