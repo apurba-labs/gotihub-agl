@@ -8,11 +8,11 @@
     "packages": [
         {
             "name": "apurba-labs/laravel-agl",
-            "version": "dev-feature/core-governance-logic",
+            "version": "dev-develop",
             "dist": {
                 "type": "path",
                 "url": "../packages/laravel-agl",
-                "reference": "3ef764047379616116766cfa801c1303a98b39b5"
+                "reference": "425b0e22ba2f450feba655bc87144b9601f40b20"
             },
             "require": {
                 "illuminate/support": "^13.0",
