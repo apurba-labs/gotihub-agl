@@ -15,10 +15,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(
-            ZkVerifier::class, 
-            MidnightService::class
-        );
+        $this->app->singleton(MidnightService::class);
+        
+        $this->app->bind(ZkVerifier::class, MidnightService::class);
+        $this->app->bind(AglBridgeInterface::class, MidnightService::class);
 
         $this->app->bind(AglAuditor::class, InstitutionalAuditor::class);
     }
