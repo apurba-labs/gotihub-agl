@@ -20,6 +20,8 @@ RUN chmod +x /usr/local/bin/install-php-extensions && \
 
 WORKDIR /var/www
 
+COPY packages ./packages
+
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
