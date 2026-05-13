@@ -96,23 +96,9 @@
     "repositories": [
         {
             "type": "path",
-            "url": "../packages/laravel-agl",
+            "url": "./packages/*",
             "options": {
-                "symlink": true
-            }
-        },
-        {
-            "type": "path",
-            "url": "../laravel-approval-engine",
-            "options": {
-                "symlink": true
-            }
-        },
-        {
-            "type": "path",
-            "url": "../laravel-iam",
-            "options": {
-                "symlink": true
+                "symlink": false
             }
         }
     ]
