@@ -27,7 +27,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copy only dependency files first to leverage Docker cache
 COPY composer.json composer.lock package.json package-lock.json ./
-RUN composer install --no-interaction --no-scripts --no-autoloader --no-dev
+
+ENV NOT_ARTISAN_DISCOVER=1
+
+RUN composer install --no-dev --no-interaction --no-scripts --optimize-autoloader
 RUN npm install
 
 # Copy the rest of the application
