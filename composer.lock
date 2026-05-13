@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7ff2f3d822cd253f11163f8445a6ed76",
+    "content-hash": "0ecfdf2c779ee9676ca2f2287f03a244",
     "packages": [
         {
             "name": "apurba-labs/laravel-agl",
