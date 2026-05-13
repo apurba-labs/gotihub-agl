@@ -1,58 +1,94 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# GotiHub-AGL: Sovereign Alumni Verification Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+[![Gemma 4 Challenge](https://img.shields.io/badge/Gemma_4-Challenge-blue?logo=google&logoColor=white)](https://dev.to/challenges/gemma)
+[![Laravel 13](https://img.shields.io/badge/Laravel-13-FF2D20?logo=laravel&logoColor=white)](https://laravel.com)
+[![Midnight Network](https://img.shields.io/badge/Privacy-Midnight_ZK--Proof-indigo)](https://midnight.network)
 
-## About Laravel
+**GotiHub-AGL** (Agentic Governance Ledger) is a decentralized identity verification platform designed for 100-year-old institutions. It bridges the gap between legacy academic records and modern privacy-preserving technology using **Gemma 4** for local policy auditing and the **Midnight Network** for Zero-Knowledge (ZK) proofs.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## The Innovation: Why Gemma 4?
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Institutional data is sensitive. Moving it to a public cloud for AI analysis is a compliance nightmare. **GotiHub-AGL** solves this by deploying **Gemma 4 E4B** locally on institutional hardware.
 
-## Learning Laravel
+- **Local Reasoning:** Gemma 4 audits alumni verification requests against complex institutional policies without the data ever leaving the server.
+- **Agentic Auditor:** Unlike static rules, the AI acts as a "Sovereign Auditor," providing detailed rationale (Markdown) for flagging or verifying high-risk records.
+- **Privacy First:** By using a local 4B model, we maintain a small footprint (running on 8GB RAM) while achieving server-grade reasoning.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Technical Stack
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- **Core Engine:** Laravel 13 (PHP 8.3+) with Native Attributes.
+- **AI Brain:** Gemma 4 (E4B / 31B) via Ollama.
+- **ZK-Proving:** Midnight Network (Compact/TypeScript Bridge).
+- **Frontend:** Filament v5 (Unified Schema) for high-fidelity dashboards.
+- **Infrastructure:** Dockerized for local or cloud (DigitalOcean) deployment.
 
-## Agentic Development
+---
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Architecture
 
+The platform operates on a "Dual-Governance" model:
+
+1. **AI Governance:** The [`laravel-agl`](https://github.com/apurba-labs/laravel-agl) engine sends record data to **Gemma 4**. The AI evaluates risks (mismatched years, suspicious IDs) and generates a **Sovereign Auditor Rationale**.
+2. **Cryptographic Governance:** Once the AI and Manager approve, a Zero-Knowledge Proof is generated via the **Midnight Bridge**. This seals the verification into an immutable proof without exposing personal data.
+
+---
+
+## Getting Started (Local Development)
+
+### 1. Prerequisites
+- Docker & Docker Compose
+- Ollama (Running Gemma 4)
+- Bun (For Midnight Sidecar)
+
+### 2. Installation
 ```bash
-composer require laravel/boost --dev
+# Clone the repository
+git clone https://github.com/apurba-labs/gotihub-agl.git
 
-php artisan boost:install
+cd gotihub-agl
+
+# Install dependencies
+composer install && npm install
+
+# Set up environment
+cp .env.example .env
+php artisan key:generate
+
+### 3. Load Gemma 4
+
+ollama pull gemma4:4b
+
+### 4. Start Services
+
+docker-compose up -d
+
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+## Roadmap
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- [x] Gemma 4 Agentic Integration
 
-## Code of Conduct
+- [x] Midnight ZK-Proof Sealing
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- [ ] Multimodal OCR for Legacy Paper Certificates (Coming Soon)
 
-## Security Vulnerabilities
+- [ ] Cross-Institution Verification Ledger
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 🤝 Collaboration & Mission
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Built by **Apurba Singh** at **ApurbaLabs** for the **Midnight Network Hackathon**.
+
+> "Securing Institutional Identity with Zero-Knowledge Governance."
+
+---
+
+## 📜 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

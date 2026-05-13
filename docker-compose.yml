@@ -1,0 +1,82 @@
+services:
+  # 1. The Laravel 13 App
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gotihub_app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+    networks:
+      - gotihub_network
+    depends_on:
+      - mysql
+
+  # 2. Nginx Web Server
+  web:
+    image: nginx:alpine
+    container_name: gotihub_web
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf # MOUNT THE FILE HERE
+    networks:
+      - gotihub_network
+
+  # 3. MySQL Database
+  mysql:
+    image: mysql:latest # This will pull MySQL 8.4 or 9.0 based on availability
+    container_name: gotihub_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-gotihub}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-root}
+      MYSQL_USER: ${DB_USERNAME:-root}
+    command: --default-authentication-plugin=mysql_native_password # For compatibility with PHP 8.5
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - gotihub_network
+
+  # 4. Ollama AI (Gemma 4)
+  ollama:
+    image: ollama/ollama
+    container_name: gotihub_ai
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    # Auto-pull Gemma 4 E4B on startup
+    entrypoint: /bin/sh -c "ollama serve & sleep 10 && ollama pull gemma4:e4b && wait"
+    networks:
+      - gotihub_network
+
+  # 5. Midnight Bridge (Bun)
+  bridge:
+    image: oven/bun:alpine
+    container_name: gotihub_bridge
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ./midnight-bridge:/app
+    command: bun run bridge-mock.ts
+    ports:
+      - "3000:3000"
+    networks:
+      - gotihub_network
+
+networks:
+  gotihub_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+  ollama_data:
