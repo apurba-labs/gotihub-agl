@@ -42,7 +42,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
       MYSQL_PASSWORD: ${DB_PASSWORD:-root}
       MYSQL_USER: ${DB_USERNAME:-root}
-    command: --mysql-native-password=ON # For compatibility with PHP 8.5
+    command: --skip-name-resolve
     ports:
       - "3306:3306"
     volumes:
