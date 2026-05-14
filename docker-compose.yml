@@ -1,6 +1,11 @@
 services:
   # 1. The Laravel 13 App
   app:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     build:
       context: .
       dockerfile: Dockerfile
