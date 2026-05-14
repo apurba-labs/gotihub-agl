@@ -1,94 +1,241 @@
-# GotiHub-AGL: Sovereign Alumni Verification Platform
+# GotiHub-AGL: Agentic Governance Ledger
 
-[![Gemma 4 Challenge](https://img.shields.io/badge/Gemma_4-Challenge-blue?logo=google&logoColor=white)](https://dev.to/challenges/gemma)
-[![Laravel 13](https://img.shields.io/badge/Laravel-13-FF2D20?logo=laravel&logoColor=white)](https://laravel.com)
+[![Laravel 13](https://img.shields.io/badge/Laravel-13-FF2D20?logo=laravel\&logoColor=white)](https://laravel.com)
+[![Gemma 4](https://img.shields.io/badge/AI-Gemma_4-blue?logo=google\&logoColor=white)](https://ai.google.dev/gemma)
 [![Midnight Network](https://img.shields.io/badge/Privacy-Midnight_ZK--Proof-indigo)](https://midnight.network)
 
-**GotiHub-AGL** (Agentic Governance Ledger) is a decentralized identity verification platform designed for 100-year-old institutions. It bridges the gap between legacy academic records and modern privacy-preserving technology using **Gemma 4** for local policy auditing and the **Midnight Network** for Zero-Knowledge (ZK) proofs.
+**GotiHub-AGL** is a governance-first local AI workflow platform designed for institutions that manage sensitive identity, approval, and transparency workflows.
+
+Built with **Laravel 13**, **Gemma 4**, and the **Midnight Network**, the platform combines:
+
+* Local AI reasoning
+* Human governance workflows
+* Zero-Knowledge privacy verification
+* Institutional audit trails
+
+Designed for:
+
+* Schools & Universities
+* NGOs & Donation Programs
+* Enterprise approval systems
+* High-trust organizations where data sovereignty matters
 
 ---
 
-## The Innovation: Why Gemma 4?
+# Why We Built This
 
-Institutional data is sensitive. Moving it to a public cloud for AI analysis is a compliance nightmare. **GotiHub-AGL** solves this by deploying **Gemma 4 E4B** locally on institutional hardware.
+Many institutions still rely on manual workflows for:
 
-- **Local Reasoning:** Gemma 4 audits alumni verification requests against complex institutional policies without the data ever leaving the server.
-- **Agentic Auditor:** Unlike static rules, the AI acts as a "Sovereign Auditor," providing detailed rationale (Markdown) for flagging or verifying high-risk records.
-- **Privacy First:** By using a local 4B model, we maintain a small footprint (running on 8GB RAM) while achieving server-grade reasoning.
+* Alumni verification
+* Donation transparency
+* Identity validation
+* Internal approvals
+* Compliance review
 
----
+Traditional AI systems often require sending confidential records to external cloud providers, creating major privacy and governance concerns.
 
-## Technical Stack
-
-- **Core Engine:** Laravel 13 (PHP 8.3+) with Native Attributes.
-- **AI Brain:** Gemma 4 (E4B / 31B) via Ollama.
-- **ZK-Proving:** Midnight Network (Compact/TypeScript Bridge).
-- **Frontend:** Filament v5 (Unified Schema) for high-fidelity dashboards.
-- **Infrastructure:** Dockerized for local or cloud (DigitalOcean) deployment.
+GotiHub-AGL solves this problem by keeping reasoning local while generating cryptographic governance proofs for sensitive workflows.
 
 ---
 
-## Architecture
+# Live Demo
 
-The platform operates on a "Dual-Governance" model:
+## Demo URL
 
-1. **AI Governance:** The [`laravel-agl`](https://github.com/apurba-labs/laravel-agl) engine sends record data to **Gemma 4**. The AI evaluates risks (mismatched years, suspicious IDs) and generates a **Sovereign Auditor Rationale**.
-2. **Cryptographic Governance:** Once the AI and Manager approve, a Zero-Knowledge Proof is generated via the **Midnight Bridge**. This seals the verification into an immutable proof without exposing personal data.
+```text id="ytn0o2"
+http://152.42.168.170:8080/admin/login
+```
 
----
+## Demo Access
 
-## Getting Started (Local Development)
-
-### 1. Prerequisites
-- Docker & Docker Compose
-- Ollama (Running Gemma 4)
-- Bun (For Midnight Sidecar)
-
-### 2. Installation
-```bash
-# Clone the repository
-git clone https://github.com/apurba-labs/gotihub-agl.git
-
-cd gotihub-agl
-
-# Install dependencies
-composer install && npm install
-
-# Set up environment
-cp .env.example .env
-php artisan key:generate
-
-### 3. Load Gemma 4
-
-ollama pull gemma4:4b
-
-### 4. Start Services
-
-docker-compose up -d
-
+```text id="w1c3go"
+Email: apurbansinghdev@gmail.com
+Password: Mid@Night@day@026
 ```
 
 ---
 
-## Roadmap
+# Example Workflow
 
-- [x] Gemma 4 Agentic Integration
+1. Secretary submits alumni verification request.
+2. Gemma 4 reviews the request locally via Ollama.
+3. AI generates:
 
-- [x] Midnight ZK-Proof Sealing
-
-- [ ] Multimodal OCR for Legacy Paper Certificates (Coming Soon)
-
-- [ ] Cross-Institution Verification Ledger
-
----
-
-## 🤝 Collaboration & Mission
-
-Built by **Apurba Singh** at **ApurbaLabs** for the **Midnight Network Hackathon**.
-
-> "Securing Institutional Identity with Zero-Knowledge Governance."
+   * reasoning trace
+   * confidence score
+   * governance risk assessment
+4. High-risk requests trigger manager escalation.
+5. Midnight Bridge generates a Zero-Knowledge proof without exposing sensitive institutional data.
 
 ---
 
-## 📜 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+# Why Gemma 4?
+
+Institutional data should not leave institutional boundaries.
+
+GotiHub-AGL uses **Gemma 4** locally to perform governance reasoning directly on trusted infrastructure.
+
+## Key Advantages
+
+### Local AI Reasoning
+
+Sensitive records remain inside the organization.
+
+### Governance-Aware Auditing
+
+AI evaluates suspicious IDs, mismatched records, duplicate submissions, and policy violations.
+
+### Operational Efficiency
+
+Gemma 4 E4B provides lightweight local reasoning suitable for institutional deployments and low-cost infrastructure.
+
+---
+
+# Why Midnight Network?
+
+AI reasoning alone is not enough for high-trust systems.
+
+Institutions also need:
+
+* verifiable approvals
+* immutable audit trails
+* privacy-preserving transparency
+* donation accountability
+* cryptographic compliance records
+
+The **Midnight Bridge** generates Zero-Knowledge governance proofs after approval workflows complete.
+
+This allows institutions to:
+
+* prove workflow integrity
+* validate approvals
+* maintain auditability
+* demonstrate financial transparency
+
+without exposing sensitive personal or institutional data.
+
+---
+
+# System Architecture
+
+The platform operates on a dual-governance model.
+
+## 1. AI Governance Layer
+
+Powered by [`laravel-agl`](https://github.com/apurba-labs/laravel-agl)
+
+Features:
+
+* Local Gemma reasoning
+* Risk scoring
+* Policy enforcement
+* Human escalation workflows
+* Governance decision tracing
+
+---
+
+## 2. Privacy Governance Layer
+
+Powered by [`gotihub-midnight-bridge`](https://github.com/apurba-labs/gotihub-midnight-bridge)
+
+Features:
+
+* Zero-Knowledge proof generation
+* Cryptographic governance sealing
+* Privacy-preserving verification
+* Immutable workflow evidence
+
+---
+
+# Core Repositories
+
+| Repository                                                                          | Purpose                                              |
+| ----------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| [`gotihub-agl`](https://github.com/apurba-labs/gotihub-agl)                         | Main governance platform and Filament control center |
+| [`laravel-agl`](https://github.com/apurba-labs/laravel-agl)                         | Reusable Laravel package for AI governance workflows |
+| [`gotihub-midnight-bridge`](https://github.com/apurba-labs/gotihub-midnight-bridge) | Midnight ZK-proof bridge powered by Bun              |
+
+---
+
+# Technical Stack
+
+* Laravel 13
+* Filament v5
+* Gemma 4 via Ollama
+* Midnight Network
+* Bun Runtime
+* Docker
+* MySQL
+
+---
+
+# Local Development
+
+## Prerequisites
+
+* Docker & Docker Compose
+* Ollama
+* Bun Runtime
+
+---
+
+## Installation
+
+```bash
+git clone https://github.com/apurba-labs/gotihub-agl.git
+
+cd gotihub-agl
+
+cp .env.example .env
+
+composer install
+npm install
+
+php artisan key:generate
+```
+
+---
+
+## Pull Gemma 4
+
+```bash
+ollama pull gemma4:e4b
+```
+
+---
+
+## Start Services
+
+```bash
+docker-compose up -d
+```
+
+---
+
+# Roadmap
+
+* [x] Local Gemma 4 governance workflows
+* [x] Midnight ZK-proof integration
+* [x] Human approval escalation system
+* [ ] OCR support for legacy institutional documents
+* [ ] Cross-institution governance federation
+* [ ] Donation transparency governance layer
+* [ ] Multi-tenant institutional deployment support
+
+---
+
+# Vision
+
+GotiHub-AGL explores how local AI reasoning and Zero-Knowledge governance can modernize sensitive institutional workflows without sacrificing privacy, transparency, or human oversight.
+
+---
+
+Built by **Apurba Singh** at **ApurbaLabs** for the **Midnight Hackathon 2026**.
+
+> “AI can recommend. Governance decides.”
+
+---
+
+# License
+
+MIT License
