@@ -42,7 +42,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
       MYSQL_PASSWORD: ${DB_PASSWORD:-root}
       MYSQL_USER: ${DB_USERNAME:-root}
-    command: --default-authentication-plugin=mysql_native_password # For compatibility with PHP 8.5
+    command: --mysql-native-password=ON # For compatibility with PHP 8.5
     ports:
       - "3306:3306"
     volumes:
