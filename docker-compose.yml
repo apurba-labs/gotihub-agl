@@ -43,8 +43,8 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD:-root}
       MYSQL_USER: ${DB_USERNAME:-root}
     command: --skip-name-resolve
-    ports:
-      - "3306:3306"
+    #ports:
+    #  - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
