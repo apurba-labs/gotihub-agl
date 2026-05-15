@@ -6,10 +6,10 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.3",
+        "php": "^8.4",
         "apurba-labs/laravel-agl": "^0.1",
-        "apurba-labs/laravel-approval-engine": "^1.4",
-        "apurba-labs/laravel-iam": "^0.4",
+        "apurba-labs/laravel-approval-engine": "^1.5",
+        "apurba-labs/laravel-iam": "^0.5",
         "filament/filament": "^5.0",
         "filament/tables": "^5.6",
         "laravel/ai": "^0.6.7",
@@ -86,9 +86,6 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
-        },
-        "platform": {
-            "php": "8.5.0"
         }
     },
     "minimum-stability": "stable",

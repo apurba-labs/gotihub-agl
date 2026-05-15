@@ -1,5 +1,5 @@
 # --- Stage 1: Build Assets ---
-FROM php:8.5-alpine as base
+FROM php:8.4-alpine as base
 
 # Install System dependencies for building
 RUN apk add --no-cache \
@@ -13,14 +13,13 @@ RUN apk add --no-cache \
     nodejs \
     npm
 
-# Install PHP extensions for PHP 8.5
+# Install PHP extensions for PHP 8.4
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions && \
     install-php-extensions pdo_mysql gd zip bcmath intl opcache
 
 WORKDIR /var/www
 
-COPY packages ./packages
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

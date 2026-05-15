@@ -66,13 +66,9 @@ services:
 
   # 5. Midnight Bridge (Bun)
   bridge:
-    image: oven/bun:alpine
+    image: apurbansingh/gotihub-midnight-bridge:latest
     container_name: gotihub_bridge
     restart: unless-stopped
-    working_dir: /app
-    volumes:
-      - ./midnight-bridge:/app
-    command: bun run bridge-mock.ts
     ports:
       - "3000:3000"
     networks:
