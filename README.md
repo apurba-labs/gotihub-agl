@@ -43,7 +43,7 @@ GotiHub-AGL solves this problem by keeping reasoning local while generating cryp
 ## Demo URL
 
 ```text id="ytn0o2"
-http://152.42.168.170:8080/admin/login
+http://152.42.168.170:8080
 ```
 
 ## Demo Access
