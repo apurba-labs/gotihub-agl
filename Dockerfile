@@ -1,5 +1,5 @@
 # =========================================================
-# Stage 1: Build Assets & Dependencies
+# Stage 1: Build Assets & Backend Dependencies
 # =========================================================
 FROM php:8.4-fpm-alpine AS base
 
@@ -45,17 +45,17 @@ RUN composer dump-autoload \
     --ignore-platform-reqs
 
 # =========================================================
-# Stage 2: Production Runtime
+# Stage 2: Production Runtime (Pure PHP 8.4-FPM)
 # =========================================================
-FROM php:8.4-fpm-alpine
+FROM php:8.4-fpm-alpine AS runtime
 
 WORKDIR /var/www
 
 # Pull the installer utility directly from its official image layer
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
-# Install base packages and compile the extensions natively inside the container
-RUN apk add --no-cache bash curl && \
+# Install runtime tools, full locale libraries, and compile extensions natively
+RUN apk add --no-cache bash curl icu-data-full && \
     install-php-extensions \
         pdo_mysql \
         mysqli \
