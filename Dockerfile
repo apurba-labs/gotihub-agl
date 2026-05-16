@@ -1,65 +1,84 @@
-# --- Stage 1: Build Assets ---
-FROM php:8.4-alpine as base
+# =========================================================
+# Stage 1: Build Assets & Dependencies
+# =========================================================
+FROM php:8.4-fpm-alpine AS base
 
-# Install System dependencies for building
-RUN apk add --no-cache \
-    bash \
-    curl \
-    git \
-    libpng-dev \
-    libzip-dev \
-    zip \
-    unzip \
-    nodejs \
-    npm
-
-# Install PHP extensions for PHP 8.4
-ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-RUN chmod +x /usr/local/bin/install-php-extensions && \
-    install-php-extensions pdo_mysql gd zip bcmath intl opcache
-
-WORKDIR /var/www
-
+# Install build tools and Node.js for Filament asset compilation
+RUN apk add --no-cache bash curl git zip unzip nodejs npm
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy only dependency files first to leverage Docker cache
-COPY composer.json composer.lock package.json package-lock.json ./
-
-ENV NOT_ARTISAN_DISCOVER=1
-
-RUN composer install --no-dev --no-interaction --no-scripts --optimize-autoloader
-RUN npm install
-
-# Copy the rest of the application
-COPY . .
-
-# Finalize Composer and Build Assets
-RUN composer dump-autoload --optimize --no-dev
-RUN npm run build
-
-# --- Stage 2: Final Production Image ---
-FROM php:8.5-fpm-alpine
 WORKDIR /var/www
 
-# FIX: Unsafe path transitions by ensuring root ownership of system paths
-# This resolves the warnings you saw in the logs
-RUN chown root:root /var && chmod 755 /var && \
-    chown root:root /var/log && chmod 755 /var/log
+# Copy dependency manifests
+COPY composer.json composer.lock package.json package-lock.json ./
 
-# Copy extensions and binaries from base
-COPY --from=base /usr/local/lib/php/extensions /usr/local/lib/php/extensions
-COPY --from=base /usr/local/etc/php/conf.d /usr/local/etc/php/conf.d
-COPY --from=base /usr/bin/composer /usr/bin/composer
+# Install backend dependencies (Ignore platform requirements for compilation stage)
+ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV NOT_ARTISAN_DISCOVER=1
+RUN composer install \
+    --no-dev \
+    --no-interaction \
+    --no-scripts \
+    --prefer-dist \
+    --optimize-autoloader \
+    --ignore-platform-reqs
+
+# Install frontend tools for Filament plugins
+RUN npm install
+
+# Copy application source
+COPY . .
+
+# Remove cached local files to avoid environment pollution
+RUN rm -rf bootstrap/cache/*.php
+
+# Compile assets (Tailwind, Filament, Vite)
+RUN npm run build
+
+# Optimize Composer autoload map
+RUN composer dump-autoload \
+    --optimize \
+    --no-dev \
+    --classmap-authoritative \
+    --ignore-platform-reqs
+
+# =========================================================
+# Stage 2: Production Runtime
+# =========================================================
+FROM php:8.4-fpm-alpine
+
+WORKDIR /var/www
+
+# Pull the installer utility directly from its official image layer
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+
+# Install base packages and compile the extensions natively inside the container
+RUN apk add --no-cache bash curl && \
+    install-php-extensions \
+        pdo_mysql \
+        mysqli \
+        mbstring \
+        bcmath \
+        intl \
+        zip \
+        exif \
+        pcntl \
+        opcache \
+        gd
+
+# Copy application data directly from base stage
 COPY --from=base /var/www /var/www
 
-# Set permissions for Laravel 13/PHP 8.5
-# We give ownership to www-data ONLY for the app files
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+# Re-assign proper ownership and permissions for Laravel's log/cache folders
+RUN mkdir -p storage/logs bootstrap/cache && \
+    chown -R www-data:www-data /var/www && \
+    chmod -R 775 storage bootstrap/cache
 
-# Switch to the web user for security
+# Switch to non-root application user
 USER www-data
 
 EXPOSE 9000
+
 CMD ["php-fpm"]

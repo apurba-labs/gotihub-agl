@@ -18,6 +18,8 @@ services:
       - gotihub_network
     depends_on:
       - mysql
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   # 2. Nginx Web Server
   web:
@@ -34,17 +36,13 @@ services:
 
   # 3. MySQL Database
   mysql:
-    image: mysql:latest # This will pull MySQL 8.4 or 9.0 based on availability
+    image: mysql:8.4 # This will pull MySQL 8.4 or 9.0 based on availability
     container_name: gotihub_db
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: ${DB_DATABASE:-gotihub}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-root}
-      MYSQL_USER: ${DB_USERNAME:-root}
     command: --skip-name-resolve
-    #ports:
-    #  - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
@@ -60,7 +58,7 @@ services:
     volumes:
       - ollama_data:/root/.ollama
     # Auto-pull Gemma 4 E4B on startup
-    entrypoint: /bin/sh -c "ollama serve & sleep 10 && ollama pull gemma4:e4b && wait"
+    entrypoint: /bin/sh -c "ollama serve & sleep 10 && ollama pull ollama pull gemma2:2b && wait"
     networks:
       - gotihub_network
 
