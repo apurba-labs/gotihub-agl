@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "78a041760ab84678238689d710c55d84",
+    "content-hash": "69bb9b845d4754338606802e2f3c403d",
     "packages": [
         {
             "name": "apurba-labs/laravel-agl",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/apurba-labs/laravel-agl.git",
-                "reference": "6751a1e1339652428ce0615ff636a144611bd6de"
+                "reference": "0276b4e412ad615cf08cf3397aafe86dc49c5507"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/apurba-labs/laravel-agl/zipball/6751a1e1339652428ce0615ff636a144611bd6de",
-                "reference": "6751a1e1339652428ce0615ff636a144611bd6de",
+                "url": "https://api.github.com/repos/apurba-labs/laravel-agl/zipball/0276b4e412ad615cf08cf3397aafe86dc49c5507",
+                "reference": "0276b4e412ad615cf08cf3397aafe86dc49c5507",
                 "shasum": ""
             },
             "require": {
