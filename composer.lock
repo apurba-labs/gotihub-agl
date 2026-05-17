@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "473fd7015273032cd053b702aee9d24a",
+    "content-hash": "69bb9b845d4754338606802e2f3c403d",
     "packages": [
         {
             "name": "apurba-labs/laravel-agl",
-            "version": "v0.1.0",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/apurba-labs/laravel-agl.git",
-                "reference": "6751a1e1339652428ce0615ff636a144611bd6de"
+                "reference": "0276b4e412ad615cf08cf3397aafe86dc49c5507"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/apurba-labs/laravel-agl/zipball/6751a1e1339652428ce0615ff636a144611bd6de",
-                "reference": "6751a1e1339652428ce0615ff636a144611bd6de",
+                "url": "https://api.github.com/repos/apurba-labs/laravel-agl/zipball/0276b4e412ad615cf08cf3397aafe86dc49c5507",
+                "reference": "0276b4e412ad615cf08cf3397aafe86dc49c5507",
                 "shasum": ""
             },
             "require": {
@@ -25,6 +25,7 @@
                 "laravel/ai": "^0.6.7",
                 "php": "^8.4"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -10843,7 +10844,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "apurba-labs/laravel-agl": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
