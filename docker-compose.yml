@@ -58,7 +58,7 @@ services:
     volumes:
       - ollama_data:/root/.ollama
     # Auto-pull Gemma 4 E4B on startup
-    entrypoint: /bin/sh -c "ollama serve & sleep 10 && ollama pull ollama pull gemma2:2b && wait"
+    entrypoint: /bin/sh -c "ollama serve & sleep 10 && ollama pull gemma2:2b && wait"
     networks:
       - gotihub_network
 
