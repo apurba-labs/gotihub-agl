@@ -200,7 +200,7 @@
             <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;">
                 <div style="display: flex; align-items: center; gap: 1rem;">
                     <a href="https://github.com/apurba-labs/gotihub-agl" target="_blank" style="color: #cbd5e1; text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#cbd5e1'">GitHub</a>
-                    <a href="http://152.42.168.170:8080/admin/login" style="padding: 0.5rem 1rem; border-radius: 9999px; background: #f59e0b; color: #000; font-weight: 600; font-size: 0.75rem; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='#fbbf24'" onmouseout="this.style.background='#f59e0b'">Live Demo →</a>
+                    <a href="http://109.199.123.230/admin" style="padding: 0.5rem 1rem; border-radius: 9999px; background: #f59e0b; color: #000; font-weight: 600; font-size: 0.75rem; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='#fbbf24'" onmouseout="this.style.background='#f59e0b'">Live Demo →</a>
                 </div>
                 <!-- Midnight Hackathon Badge -->
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -233,7 +233,7 @@
                     GotiHub AGL helps institutions secure sensitive approval and verification workflows using local AI reasoning, human governance escalation, and Zero-Knowledge audit verification.
                 </p>
                 <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem;">
-                    <a href="http://152.42.168.170:8080/admin/login" class="btn-primary">Launch Governance Hub →</a>
+                    <a href="http://109.199.123.230/admin" class="btn-primary">Launch Governance Hub →</a>
                     <a href="https://github.com/apurba-labs/gotihub-agl" class="btn-secondary">Explore on GitHub</a>
                 </div>
                 <div style="display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.75rem; color: #64748b;">
@@ -465,11 +465,11 @@
                 <h2 style="margin-bottom: 0.75rem;">Live Governance Demo</h2>
                 <p style="color: #94a3b8; font-size: 0.875rem; max-width: 36rem; margin: 0 auto 1.5rem auto;">Explore the dashboard, AI reasoning, risk engine, and Midnight verification</p>
                 <div style="background: rgba(0, 0, 0, 0.4); border-radius: 0.75rem; padding: 1rem; max-width: 24rem; margin: 0 auto 1.5rem auto; text-align: left;">
-                    <p style="color: #cbd5e1; font-size: 0.75rem; margin-bottom: 0.5rem;"><strong>Demo URL:</strong><br>http://152.42.168.170:8080/admin/login</p>
+                    <p style="color: #cbd5e1; font-size: 0.75rem; margin-bottom: 0.5rem;"><strong>Demo URL:</strong><br>http://109.199.123.230/admin</p>
                     <p style="color: #cbd5e1; font-size: 0.75rem; margin-bottom: 0.25rem;"><strong>Email:</strong> apurbansinghdev@gmail.com</p>
                     <p style="color: #cbd5e1; font-size: 0.75rem;"><strong>Password:</strong> Mid@Night@day@026</p>
                 </div>
-                <a href="http://152.42.168.170:8080/admin/login" class="btn-primary" style="display: inline-flex;">Access Dashboard →</a>
+                <a href="http://109.199.123.230/admin" class="btn-primary" style="display: inline-flex;">Access Dashboard →</a>
             </div>
         </div>
     </section>
