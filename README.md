@@ -43,7 +43,7 @@ GotiHub-AGL solves this problem by keeping reasoning local while generating cryp
 ## Demo URL
 
 ```text id="ytn0o2"
-http://109.199.123.230
+http://agl.gotihub.com
 
 ```
 
@@ -170,11 +170,34 @@ Features:
 
 ---
 
+# GotiHub AGL Platform Ecosystem 🏛️🔥
+
+Welcome to the **GotiHub AGL (Architectural Maturity Engine)** repository. This repository houses the core microservices, smart-contract zero-knowledge bridges, and local AI workflows that power the decentralized and automated operations of the GotiHub platform ecosystem.
+
+The entire environment is containerized, isolated, and designed to deploy smoothly behind a global reverse proxy layer without messing with the host operating system.
+
+---
+
+## 📊 Infrastructure & Port Architecture
+
+To achieve true multi-tenant harmony on our production hardware, this stack has been engineered to run on isolated host ports, fully hidden behind our global `gotihub_master_router` container on Port `80`.
+
+| Domain Route | Internal Service | Host Port | Internal Container Port |
+| :--- | :--- | :--- | :--- |
+| **agl.gotihub.com** | Nginx Ingress Proxy (`gotihub_web`) | `8081` | `80` |
+| *Internal Link* | Laravel 13 App Runtime (`gotihub_app`) | *Isolated* | `9000` (PHP-FPM) |
+| *Internal Link* | MySQL 8.4 Cluster Database (`gotihub_db`) | *Isolated* | `3306` |
+| *Internal Link* | Ollama Local AI Cluster (`gotihub_ai`) | `11435` | `11434` (Gemma 2:2b) |
+| *Internal Link* | Midnight Governance Bridge (`gotihub_bridge`) | `3001` | `3000` (Bun Runtime) |
+
+---
+
 # Local Development
 
 ## Prerequisites
 
-* Docker & Docker Compose
+* Docker & Docker Compose V2 installed
+* Global `gotihub_master_router` container listening on Host Port 80
 * Ollama
 * Bun Runtime
 
