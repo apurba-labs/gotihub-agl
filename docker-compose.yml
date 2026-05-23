@@ -73,7 +73,9 @@ services:
 
 networks:
   gotihub_network:
-    driver: bridge
+    name: gotihub_global_network
+    external: true
+    #driver: bridge
 
 volumes:
   mysql_data:
