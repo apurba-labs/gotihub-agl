@@ -43,7 +43,8 @@ GotiHub-AGL solves this problem by keeping reasoning local while generating cryp
 ## Demo URL
 
 ```text id="ytn0o2"
-http://agl.gotihub.com
+http://agl.gotihub.com or https://agl.gotihub.com
+
 
 ```
 
