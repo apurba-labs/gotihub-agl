@@ -233,7 +233,7 @@
                     GotiHub AGL helps institutions secure sensitive approval and verification workflows using local AI reasoning, human governance escalation, and Zero-Knowledge audit verification.
                 </p>
                 <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem;">
-                    <a href="http://109.199.123.230/admin" class="btn-primary">Launch Governance Hub →</a>
+                    <a href="/admin" class="btn-primary">Launch Governance Hub →</a>
                     <a href="https://github.com/apurba-labs/gotihub-agl" class="btn-secondary">Explore on GitHub</a>
                 </div>
                 <div style="display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.75rem; color: #64748b;">
@@ -465,11 +465,11 @@
                 <h2 style="margin-bottom: 0.75rem;">Live Governance Demo</h2>
                 <p style="color: #94a3b8; font-size: 0.875rem; max-width: 36rem; margin: 0 auto 1.5rem auto;">Explore the dashboard, AI reasoning, risk engine, and Midnight verification</p>
                 <div style="background: rgba(0, 0, 0, 0.4); border-radius: 0.75rem; padding: 1rem; max-width: 24rem; margin: 0 auto 1.5rem auto; text-align: left;">
-                    <p style="color: #cbd5e1; font-size: 0.75rem; margin-bottom: 0.5rem;"><strong>Demo URL:</strong><br>http://109.199.123.230/admin</p>
+                    <p style="color: #cbd5e1; font-size: 0.75rem; margin-bottom: 0.5rem;"><strong>Demo URL:</strong><br>http://agl.gotihub.com/admin or https://agl.gotihub.com/admin</p>
                     <p style="color: #cbd5e1; font-size: 0.75rem; margin-bottom: 0.25rem;"><strong>Email:</strong> apurbansinghdev@gmail.com</p>
                     <p style="color: #cbd5e1; font-size: 0.75rem;"><strong>Password:</strong> Mid@Night@day@026</p>
                 </div>
-                <a href="http://109.199.123.230/admin" class="btn-primary" style="display: inline-flex;">Access Dashboard →</a>
+                <a href="/admin" class="btn-primary" style="display: inline-flex;">Access Dashboard →</a>
             </div>
         </div>
     </section>
