@@ -200,7 +200,7 @@
             <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;">
                 <div style="display: flex; align-items: center; gap: 1rem;">
                     <a href="https://github.com/apurba-labs/gotihub-agl" target="_blank" style="color: #cbd5e1; text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#cbd5e1'">GitHub</a>
-                    <a href="http://109.199.123.230/admin" style="padding: 0.5rem 1rem; border-radius: 9999px; background: #f59e0b; color: #000; font-weight: 600; font-size: 0.75rem; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='#fbbf24'" onmouseout="this.style.background='#f59e0b'">Live Demo →</a>
+                    <a href="/admin" style="padding: 0.5rem 1rem; border-radius: 9999px; background: #f59e0b; color: #000; font-weight: 600; font-size: 0.75rem; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='#fbbf24'" onmouseout="this.style.background='#f59e0b'">Live Demo →</a>
                 </div>
                 <!-- Midnight Hackathon Badge -->
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
